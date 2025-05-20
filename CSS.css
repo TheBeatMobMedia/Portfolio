@@ -1,0 +1,1068 @@
+/* --- FONT IMPORT & GLOBAL RESET --- */
+/* Loads Poppins font for the whole site */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+/* Removes outlines and sets box-sizing for all elements */
+* { outline: none; box-sizing: border-box; }
+
+/* --- THEME VARIABLES (DARK MODE DEFAULT) --- */
+/* These variables control colors, backgrounds, and fonts throughout the site */
+:root {
+  --theme-bg-color: rgba(16, 18, 27, 0.4); /* Main glassmorphic background */
+  --border-color: rgba(113, 119, 144, 0.25); /* Border color for cards/sections */
+  --theme-color: #f9fafb; /* Main text color */
+  --inactive-color: rgba(113, 119, 144, 0.78); /* Muted text color */
+  --body-font: "Poppins", sans-serif; /* Main font */
+  --hover-menu-bg: rgba(12, 15, 25, 0.3); /* Sidebar/menu hover background */
+  --content-title-color: #999ba5; /* Section title color */
+  --content-bg: rgba(146, 151, 179, 0.13); /* Card background */
+  --button-inactive: rgba(249, 250, 251, 0.55); /* Inactive button color */
+  --dropdown-bg: #21242d; /* Dropdown background */
+  --dropdown-hover: #2a2e3c; /* Dropdown hover background */
+  --popup-bg: #161925; /* Popup/modal background */
+  --search-bg: #14162b; /* Search bar background */
+  --overlay-bg: rgba(36, 39, 59, 0.3); /* Overlay for modals */
+  --scrollbar-bg: rgba(1, 2, 3, 0.4); /* Custom scrollbar color */
+}
+
+/* --- LIGHT MODE OVERRIDES --- */
+/* When .light-mode is on <body>, these variables override the dark ones */
+.light-mode {
+  --theme-bg-color: rgba(255, 255, 255, 0.31);
+  --theme-color: #3c3a3a;
+  --inactive-color: #333333;
+  --button-inactive: #3c3a3a;
+  --search-bg: rgba(255, 255, 255, 0.31);
+  --dropdown-bg: #f7f7f7;
+  --overlay-bg: rgba(255, 255, 255, 0.3);
+  --dropdown-hover: #ececec;
+  --border-color: rgba(255, 255, 255, 0.35);
+  --popup-bg: #fff;
+  --hover-menu-bg: rgba(255, 255, 255, 0.35);
+  --scrollbar-bg: rgba(255, 253, 253, 0.57);
+  --content-title-color: --theme-color;
+}
+
+/* --- BASE HTML/BODY STYLES --- */
+/* Sets up font, background image, and layout for the whole page */
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: var(--body-font); /* Uses Poppins font */
+  background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg); /* Main background */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  width: 100%;
+  height: 100vh;
+}
+
+/* --- RESPONSIVE BODY PADDING FOR MOBILE --- */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 0.8em;
+  }
+}
+
+/* --- VIDEO BACKGROUND (OPTIONAL) --- */
+/* For a full-screen video background if used */
+.video-bg {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- UNIVERSAL IMAGE STYLING --- */
+/* Ensures images never overflow their containers */
+img {
+  max-width: 100%;
+}
+
+/* --- DARK/LIGHT MODE TOGGLE BUTTON --- */
+/* Styles the floating dark/light mode toggle button */
+.dark-light {
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  background-color: var(--dropdown-bg);
+  box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border-radius: 50%;
+  z-index: 3;
+  cursor: pointer;
+}
+.dark-light svg {
+  width: 24px;
+  flex-shrink: 0;
+  fill: #ffce45;
+  stroke: #ffce45;
+  transition: 0.5s;
+}
+/* Changes icon color in light mode */
+.light-mode .dark-light svg {
+  fill: transparent;
+  stroke: var(--theme-color);
+}
+
+/* --- PROFILE IMAGE BORDER IN LIGHT MODE --- */
+.light-mode .profile-img {
+  border: 2px solid var(--theme-bg-color);
+}
+
+/* --- CONTENT SECTION BACKGROUND IN LIGHT MODE --- */
+.light-mode .content-section ul {
+  background-color: var(--theme-bg-color);
+}
+
+/* --- POPUP TITLE BORDER IN LIGHT MODE --- */
+.light-mode .pop-up__title {
+  border-color: var(--theme-color);
+}
+
+/* --- DROPDOWN BACKGROUND IN LIGHT MODE --- */
+.light-mode .dropdown.is-active ul {
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+/* --- LIGHT MODE OVERLAY EFFECTS --- */
+body.light-mode:before,
+body.light-mode .video-bg:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%);
+  backdrop-filter: saturate(3);
+}
+
+/* --- APP CONTAINER (GLASSMORPHIC CARD) --- */
+/* Main app card with glass effect and rounded corners */
+.app {
+  background-color: var(--theme-bg-color);
+  max-width: 1250px;
+  max-height: 860px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* --- HEADER BAR --- */
+/* Styles the top navigation/header bar */
+.header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 58px;
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 30px;
+  white-space: nowrap;
+}
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 0 16px;
+  }
+}
+
+/* --- HEADER MENU --- */
+/* Styles the menu items in the header */
+.header-menu {
+  display: flex;
+  align-items: center;
+}
+.header-menu a {
+  padding: 20px 30px;
+  text-decoration: none;
+  color: var(--inactive-color);
+  border-bottom: 2px solid transparent;
+  transition: 0.3s;
+}
+@media screen and (max-width: 610px) {
+  .header-menu a:not(.main-header-link) {
+    display: none;
+  }
+}
+.header-menu a.is-active,
+.header-menu a:hover {
+  color: var(--theme-color);
+  border-bottom: 2px solid var(--theme-color);
+}
+
+/* --- NOTIFICATION BADGE --- */
+/* Styles the notification indicator on the profile icon */
+.notify {
+  position: relative;
+}
+.notify:before {
+  content: "";
+  position: absolute;
+  background-color: #3a6df0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  right: 20px;
+  top: 16px;
+}
+@media screen and (max-width: 1055px) {
+  .notify {
+    display: none;
+  }
+}
+
+/* --- MENU CIRCLE (HIDDEN IN MOBILE) --- */
+/* Decorative element in the header, hidden in mobile view */
+.menu-circle {
+  width: 15px;
+  height: 15px;
+  background-color: #f96057;
+  border-radius: 50%;
+  box-shadow: 24px 0 0 0 #f8ce52, 48px 0 0 0 #5fcf65;
+  margin-right: 195px;
+  flex-shrink: 0;
+}
+@media screen and (max-width: 945px) {
+  .menu-circle {
+    display: none;
+  }
+}
+
+/* --- SEARCH BAR --- */
+/* Styles the search input in the header */
+.search-bar {
+  height: 40px;
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  padding-left: 16px;
+  border-radius: 4px;
+}
+.search-bar input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: var(--search-bg);
+  border-radius: 4px;
+  font-family: var(--body-font);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0 20px 0 40px;
+  box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56.966 56.966' fill='%23717790c7'%3e%3cpath d='M55.146 51.887L41.588 37.786A22.926 22.926 0 0046.984 23c0-12.682-10.318-23-23-23s-23 10.318-23 23 10.318 23 23 23c4.761 0 9.298-1.436 13.177-4.162l13.661 14.208c.571.593 1.339.92 2.162.92.779 0 1.518-.297 2.079-.837a3.004 3.004 0 00.083-4.242zM23.984 6c9.374 0 17 7.626 17 17s-7.626 17-17 17-17-7.626-17-17 7.626-17 17-17z'/%3e%3c/svg%3e");
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: 16px 48%;
+  color: var(--theme-color);
+}
+.search-bar input::placeholder {
+  font-family: var(--body-font);
+  color: var(--inactive-color);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* --- PROFILE MENU IN HEADER --- */
+/* Styles the profile icon and notification in the header */
+.header-profile {
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 40px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.header-profile svg {
+  width: 22px;
+  color: #f9fafb;
+  flex-shrink: 0;
+}
+
+/* --- NOTIFICATION ICON STYLES --- */
+/* Styles the notification icon and number */
+.notification {
+  position: relative;
+}
+.notification-number {
+  position: absolute;
+  background-color: #3a6df0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  right: -6px;
+  top: -6px;
+}
+.notification + svg {
+  margin-left: 22px;
+}
+@media screen and (max-width: 945px) {
+  .notification + svg {
+    display: none;
+  }
+}
+
+/* --- PROFILE IMAGE --- */
+/* Styles the user profile image */
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-color);
+  margin-left: 22px;
+}
+
+/* --- HIDE ELEMENTS IN WIDE MODE --- */
+/* Hides certain elements in wider screens */
+.wide .header-menu,
+.wide .header-profile {
+  display: none;
+}
+.wide .search-bar {
+  max-width: 600px;
+  margin: auto;
+  transition: 0.4s;
+  box-shadow: 0 0 0 1px var(--border-color);
+  padding-left: 0;
+}
+.wide .menu-circle {
+  margin-right: 0;
+}
+
+/* --- MAIN CONTENT WRAPPER --- */
+/* Sets up the layout for the main content area */
+.wrapper {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* --- SIDEBAR (LEFT NAVIGATION) --- */
+/* Styles the collapsible sidebar on the left */
+.left-side {
+  flex-basis: 240px;
+  border-right: 1px solid var(--border-color);
+  padding: 26px;
+  overflow: auto;
+  flex-shrink: 0;
+}
+@media screen and (max-width: 945px) {
+  .left-side {
+    display: none;
+  }
+}
+
+/* --- SIDEBAR MENU --- */
+/* Styles the menu items in the sidebar */
+.side-wrapper + .side-wrapper {
+  margin-top: 20px;
+}
+.side-title {
+  color: var(--inactive-color);
+  margin-bottom: 14px;
+}
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+.side-menu a {
+  text-decoration: none;
+  color: var(--theme-color);
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+.side-menu a:hover {
+  background-color: var(--hover-menu-bg);
+}
+.side-menu svg {
+  width: 16px;
+  margin-right: 8px;
+}
+
+/* --- UPDATES INDICATOR --- */
+/* Styles the updates badge on menu items */
+.updates {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+}
+
+/* --- MAIN HEADER --- */
+/* Styles the main header section */
+.main-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  height: 58px;
+  flex-shrink: 0;
+}
+.main-header .header-menu {
+  margin-left: 150px;
+}
+@media screen and (max-width: 1055px) {
+  .main-header .header-menu {
+    margin: auto;
+  }
+}
+.main-header .header-menu a {
+  padding: 20px 24px;
+}
+
+/* --- MAIN CONTENT AREA --- */
+/* Styles the primary content area where sections are displayed */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* --- MAIN MENU LINK --- */
+/* Styles the main link in the menu */
+.menu-link-main {
+  text-decoration: none;
+  color: var(--theme-color);
+  padding: 0 30px;
+}
+@media screen and (max-width: 1055px) {
+  .menu-link-main {
+    display: none;
+  }
+}
+
+/* --- CONTENT WRAPPER --- */
+/* Wrapper for individual content sections */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  color: var(--theme-color);
+  padding: 20px 40px;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--theme-bg-color);
+}
+@media screen and (max-width: 510px) {
+  .content-wrapper {
+    padding: 20px;
+  }
+}
+
+/* --- CONTENT HEADER --- */
+/* Header section for individual content pages */
+.content-wrapper-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png"), linear-gradient(to right top, #cf4af3, #e73bd7, #f631bc, #fd31a2, #ff3a8b, #ff4b78, #ff5e68, #ff705c, #ff8c51, #ffaa49, #ffc848, #ffe652);
+  border-radius: 14px;
+  padding: 20px 40px;
+}
+@media screen and (max-width: 415px) {
+  .content-wrapper-header {
+    padding: 20px;
+  }
+}
+
+/* --- CONTENT WRAPPER OVERLAY --- */
+/* Overlay effect for the content wrapper */
+.content-wrapper.overlay {
+  pointer-events: none;
+  transition: 0.3s;
+  background-color: var(--overlay-bg);
+}
+
+/* --- OVERLAY APP --- */
+/* Fullscreen overlay for modals and popups */
+.overlay-app {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: all;
+  background-color: rgba(36, 39, 59, 0.8);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+.overlay-app.is-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- IMAGE CONTENT --- */
+/* Styles for image and text content blocks */
+.img-content {
+  font-weight: 500;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.img-content svg {
+  width: 28px;
+  margin-right: 14px;
+}
+
+/* --- CONTENT TEXT --- */
+/* Styles the text blocks within content sections */
+.content-text {
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 16px;
+  line-height: 1.3em;
+  color: #ebecec;
+  display: -webkit-box;
+  -webkit-line-clamp: 14;
+  line-clamp: 14;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- CONTENT BUTTON --- */
+/* Styles the primary action button in content sections */
+.content-button {
+  background-color: #3a6df0;
+  border: none;
+  padding: 8px 26px;
+  color: #fff;
+  border-radius: 20px;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+/* --- CONTENT IMAGE --- */
+/* Styles the images within content sections */
+.content-wrapper-img {
+  width: 186px;
+  object-fit: cover;
+  margin-top: -25px;
+  object-position: center;
+}
+@media screen and (max-width: 570px) {
+  .content-wrapper-img {
+    width: 110px;
+  }
+}
+
+/* --- CONTENT SECTION --- */
+/* Wrapper for grouped content items */
+.content-section {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- CONTENT SECTION TITLE --- */
+/* Title for content sections */
+.content-section-title {
+  color: var(--content-title-color);
+  margin-bottom: 14px;
+}
+
+/* --- CONTENT SECTION LIST --- */
+/* Styles the list of items within a content section */
+.content-section ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  background-color: var(--content-bg);
+  padding-left: 0;
+  margin: 0;
+  border-radius: 14px;
+  border: 1px solid var(--theme-bg-color);
+  cursor: pointer;
+}
+.content-section ul li {
+  list-style: none;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+.content-section ul li:hover {
+  background-color: var(--theme-bg-color);
+}
+.content-section ul li:first-child:hover {
+  border-radius: 13px 13px 0 0;
+}
+.content-section ul li:last-child:hover {
+  border-radius: 0 0 13px 13px;
+}
+.content-section ul li + li {
+  border-top: 1px solid var(--border-color);
+}
+.content-section ul svg {
+  width: 28px;
+  border-radius: 6px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+/* --- PRODUCT ITEM --- */
+/* Styles individual product items in a list */
+.products {
+  display: flex;
+  align-items: center;
+  width: 150px;
+}
+@media screen and (max-width: 480px) {
+  .products {
+    width: 120px;
+  }
+}
+
+/* --- STATUS INDICATOR --- */
+/* Styles the status indicator for items */
+.status {
+  margin-left: auto;
+  width: 140px;
+  font-size: 15px;
+  position: relative;
+}
+@media screen and (max-width: 700px) {
+  .status {
+    display: none;
+  }
+}
+.status-circle {
+  width: 6px;
+  height: 6px;
+  background-color: #396df0;
+  position: absolute;
+  border-radius: 50%;
+  top: 4px;
+  left: -20px;
+}
+.status-circle.green {
+  background-color: #3bf083;
+}
+
+/* --- STATUS BUTTON --- */
+/* Styles the button that shows/hides status details */
+.status-button {
+  font-size: 15px;
+  margin-top: 0;
+  padding: 6px 24px;
+}
+@media screen and (max-width: 390px) {
+  .status-button {
+    padding: 6px 14px;
+  }
+}
+.status-button.open {
+  background: none;
+  color: var(--button-inactive);
+  border: 1px solid var(--button-inactive);
+}
+.status-button:not(.open):hover {
+  color: #fff;
+  border-color: #fff;
+}
+.content-button:not(.open):hover {
+  background: #1e59f1;
+}
+
+/* --- MENU DOTS --- */
+/* Decorative dots in the menu for active/inactive state */
+.menu {
+  width: 5px;
+  height: 5px;
+  background-color: var(--button-inactive);
+  border-radius: 50%;
+  box-shadow: 7px 0 0 0 var(--button-inactive), 14px 0 0 0 var(--button-inactive);
+  margin: 0 12px;
+}
+@media screen and (max-width: 415px) {
+  .adobe-product .menu {
+    display: none;
+  }
+}
+
+/* --- DROPDOWN MENU --- */
+/* Styles the dropdown menus in the app */
+.dropdown {
+  position: relative;
+  height: 53px;
+  width: 40px;
+  top: -24px;
+  display: flex;
+  left: -5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dropdown ul {
+  position: absolute;
+  background: var(--dropdown-bg);
+  height: 110px;
+  width: 120px;
+  right: 0;
+  top: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translatey(10px);
+  transition: all 0.4s ease;
+}
+.dropdown ul li a {
+  text-decoration: none;
+  color: var(--theme-color);
+  font-size: 12px;
+}
+.dropdown.is-active ul {
+  opacity: 1;
+  pointer-events: all;
+  transform: translatey(25px);
+}
+.dropdown.is-active ul li:hover {
+  background-color: var(--dropdown-hover);
+}
+
+/* --- BUTTON WRAPPER --- */
+/* Aligns buttons to the right in their container */
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 187px;
+  margin-left: auto;
+}
+@media screen and (max-width: 480px) {
+  .button-wrapper {
+    width: auto;
+  }
+}
+
+/* --- POPUP MODAL --- */
+/* Styles the popup modals used throughout the app */
+.pop-up {
+  position: absolute;
+  padding: 30px 40px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s;
+  z-index: 10;
+  background-color: var(--popup-bg);
+  width: 500px;
+  visibility: hidden;
+  opacity: 0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+}
+@media screen and (max-width: 570px) {
+  .pop-up {
+    width: 100%;
+  }
+}
+.pop-up.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- POPUP TITLE --- */
+/* Styles the title section of popups */
+.pop-up__title {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- POPUP SUBTITLE --- */
+/* Styles the subtitle text in popups */
+.pop-up__subtitle {
+  white-space: normal;
+  margin: 20px 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8em;
+}
+.pop-up__subtitle a {
+  color: var(--theme-color);
+}
+
+/* --- CLOSE BUTTON IN POPUPS --- */
+/* Styles the close button in content sections */
+.content-button-wrapper .content-button.status-button.open.close {
+  width: auto;
+}
+.content-section .close {
+  margin-right: 0;
+  width: 24px;
+}
+
+/* --- CHECKBOX STYLES --- */
+/* Custom checkbox styles for forms */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+}
+.checkbox-wrapper + .checkbox-wrapper {
+  margin: 20px 0 40px;
+}
+.checkbox {
+  display: none;
+}
+.checkbox + label {
+  display: flex;
+  align-items: center;
+}
+.checkbox + label:before {
+  content: "";
+  margin-right: 10px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--theme-color);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.checkbox:checked + label:before {
+  background-color: #3a6df0;
+  border-color: #3a6df0;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check'%3e%3cpath d='M20 6L9 17l-5-5'/%3e%3c/svg%3e");
+  background-position: 50%;
+  background-size: 12px;
+  background-repeat: no-repeat;
+}
+
+/* --- CONTENT BUTTON WRAPPER --- */
+/* Aligns action buttons to the bottom of their container */
+.content-button-wrapper {
+  margin-top: auto;
+  margin-left: auto;
+}
+.content-button-wrapper .open {
+  margin-right: 8px;
+}
+
+/* --- APPS CARD --- */
+/* Styles the card containers for apps or features */
+.apps-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: calc(100% + 20px);
+}
+.app-card {
+  display: flex;
+  flex-direction: column;
+  width: calc(33.3% - 20px);
+  font-size: 16px;
+  background-color: var(--content-bg);
+  border-radius: 14px;
+  border: 1px solid var(--theme-bg-color);
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.app-card:hover {
+  transform: scale(1.02);
+  background-color: var(--theme-bg-color);
+}
+.app-card svg {
+  width: 28px;
+  border-radius: 6px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.app-card + .app-card {
+  margin-left: 20px;
+}
+.app-card span {
+  display: flex;
+  align-items: center;
+}
+
+/* --- APP CARD SUBTEXT --- */
+/* Styles the subtext area in app cards */
+.app-card__subtext {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6em;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+/* --- APP CARD BUTTONS --- */
+/* Aligns buttons in app cards to the right */
+.app-card-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-top: 16px;
+}
+
+/* --- AUDIO CAROUSEL & MODAL --- */
+/* Controls the audio carousel, navigation arrows, dots, and modal popup for Spotify embeds */
+.audio-carousel-wrapper {
+  display: flex;                /* Arrange arrows and carousel in a row */
+  align-items: center;          /* Vertically center everything */
+  justify-content: center;      /* Center the whole carousel horizontally */
+  gap: 0.5em;                   /* Space between arrows and carousel */
+  width: 100%;                  /* Take full width of parent */
+  max-width: 500px;             /* But never exceed 500px */
+  margin: 0 auto;               /* Center in parent horizontally */
+  position: relative;           /* For positioning children if needed */
+}
+.audio-carousel {
+  display: flex;                /* Arrange images in a row */
+  overflow: hidden;             /* Hide images that overflow the box */
+  width: 260px;                 /* Show two images at a time (2*120px + gap) */
+  scroll-behavior: smooth;      /* Smooth scroll when sliding */
+  touch-action: pan-x;          /* Allow horizontal swipe on touch devices */
+}
+.carousel-img {
+  width: 120px;                 /* Each image is 120px wide */
+  height: 120px;                /* Each image is 120px tall */
+  object-fit: cover;            /* Crop image to fill box, keep aspect ratio */
+  border-radius: 12px;          /* Rounded corners */
+  cursor: pointer;              /* Cursor becomes pointer on hover */
+  margin-right: 1em;            /* Space between images */
+  transition: transform 0.2s;   /* Smooth scaling on hover */
+  flex-shrink: 0;               /* Prevent images from shrinking */
+}
+.carousel-img:last-child {
+  margin-right: 0;              /* No margin after the last image */
+}
+.carousel-img:hover {
+  transform: scale(1.08);       /* Slightly enlarge image on hover */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Add a shadow on hover */
+}
+.carousel-arrow {
+  background: #222;             /* Dark background */
+  color: #fff;                  /* White arrow */
+  border: none;                 /* No border */
+  border-radius: 50%;           /* Circular button */
+  width: 36px;                  /* Button size */
+  height: 36px;
+  font-size: 1.5em;             /* Arrow size */
+  cursor: pointer;              /* Pointer on hover */
+  transition: background 0.2s;  /* Smooth background color change */
+  z-index: 2;                   /* Make sure arrows are above images */
+}
+.carousel-arrow:hover {
+  background: #444;             /* Lighter background on hover */
+}
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5em;
+  gap: 0.5em;
+}
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #bbb;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.carousel-dot.active {
+  background: #333;
+}
+.audio-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  align-items: center;
+  justify-content: center;
+}
+.audio-modal.visible {
+  display: flex;
+}
+.audio-modal-content {
+  background: #181818;
+  border-radius: 16px;
+  padding: 2em;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  position: relative;
+}
+.audio-modal-close {
+  position: absolute;
+  top: 1em; right: 1em;
+  font-size: 2em;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* --- SECTION VISIBILITY TOGGLING --- */
+.section-hidden { display: none !important; }
+.section-visible { display: block !important; }
+
+/* --- END OF EXAMPLE --- */
+/* Continue this pattern for every section of your CSS for easy editing and understanding! */
+
+.about-row {
+  display: flex;
+  justify-content: space-between; /* pushes logo to the right */
+  align-items: center;            /* vertically centers */
+  gap: 2rem;                      /* optional: space between text and logo */
+}
+
+.content-wrapper-context {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.about-logo {
+  flex-shrink: 0;
+  max-width: 175px;
+  height: auto;
+  margin-left: 2rem; /* optional: extra space from text */
+}
